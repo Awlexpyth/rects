@@ -1,0 +1,46 @@
+import pygame
+# initialise pygame 
+pygame.init()
+# import the screen :)
+screen=pygame.display.set_mode((800,800))
+
+running = True
+
+
+class circle():
+    def __init__(self,rad):
+        self.circlecolor="green"
+        self.circleposition = (400,400)
+        self.circleradius = rad
+        self.circlesuraface = screen
+    def grocirc(self,r):
+        self.circleradius += r
+        pygame.draw.circle(self.circlesuraface,self.circlecolor,self.circleposition,self.circleradius)
+    def smallcirc(self,r):
+        self.circleradius -= r
+        pygame.draw.circle(self.circlesuraface,self.circlecolor,self.circleposition,self.circleradius)
+    def circ(self):
+        pygame.draw.circle(self.circlesuraface,self.circlecolor,self.circleposition,self.circleradius)      
+ball=circle(55)
+
+      
+
+
+
+while running: 
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT:
+            running=False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            screen.fill("black")
+            ball.circ()
+            pygame.display.update()
+        if event.type == pygame.MOUSEBUTTONUP:
+            screen.fill("black")
+            ball.grocirc(20)
+            pygame.display.update()
+        if event.type == pygame.KEYDOWN:
+            screen.fill("black")
+            if event.key == pygame.K_SPACE:
+                ball.smallcirc(20)
+                pygame.display.update()
