@@ -1,0 +1,28 @@
+import pygame
+pygame.init()
+HEIGHT=900
+WIDTH=900
+
+screen=pygame.display.set_mode((WIDTH,HEIGHT))
+
+img=pygame.image.load("Appolo11.png")
+ima=pygame.transform.scale(img,(900,900))
+
+imag=pygame.image.load("background.png")
+image=pygame.transform.scale(imag,(900,900))
+
+
+
+
+
+
+
+
+
+while running:
+    screen.blit(ima(0,0)) 
+    screen.blit(image(0,0))
+    pygame.display.update()
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT:
+            running=False
