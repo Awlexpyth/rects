@@ -1,0 +1,61 @@
+from pygame.locals import *
+import pygame
+pygame.init()
+HEIGHT=900
+WIDTH=900
+
+screen=pygame.display.set_mode((WIDTH,HEIGHT))
+
+img=pygame.image.load("Apollo.png")
+ima=pygame.transform.scale(img,(75,75))
+
+imag=pygame.image.load("background.png")
+image=pygame.transform.scale(imag,(900,900))
+
+#keys[up,left,down,right]
+keys=[False,False,False,False]
+
+imaX=450
+imaY=450
+
+
+running=True
+
+while running:
+    screen.blit(image,(0,0)) 
+    screen.blit(ima,(imaX,imaY))
+    pygame.display.update()
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT:
+            running=False
+        if event.type == pygame.KEYDOWN:
+            if event.key==K_UP:
+                keys[0]=True
+            elif event.key == K_LEFT:
+                keys[1]=True
+            elif event.key == K_RIGHT:
+                keys[2]=True
+            elif event.key == K_DOWN:
+                keys[3]=True
+        if event.type == pygame.KEYUP:
+            if event.key==K_UP:
+                keys[0]=False
+            elif event.key == K_LEFT:
+                keys[1]=False
+            elif event.key == K_RIGHT:
+                keys[2]=False
+            elif event.key == K_DOWN:
+                keys[3]=False
+                
+    if keys[0] :
+        if imaY > 0:
+            imaY -= 1
+    if keys[1]  :
+        if imaX > 0:
+            imaX -=1  
+    if keys[2]  :
+        if imaX < 850:
+            imaX +=1
+    if keys[3]  :
+        if imaY < 850:
+            imaY +=1
