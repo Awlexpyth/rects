@@ -1,0 +1,51 @@
+import pygame
+pygame.init()
+WIDTH=600
+HEIGHT=600
+screen= pygame.display.set_mode((WIDTH,HEIGHT))
+screen.fill((255,255,255))
+pygame.display.update()
+
+subway_surfers=pygame.image.load("SS.png")
+candycrush=pygame.image.load("CC.jpg")
+ludo=pygame.image.load("LD.png")
+templerun=pygame.image.load("TP.png")
+
+
+screen.blit(subway_surfers,(150,100))
+font=pygame.font.SysFont("Times New Roman",30)
+text=font.render("Subway surfers",True,"black")
+screen.blit(text,(350,400))
+screen.blit(candycrush,(150,200))
+font=pygame.font.SysFont("Times New Roman",30)
+text=font.render("Candycrush",True,"black")
+screen.blit(text,(350,100))
+screen.blit(ludo,(150,300))
+font=pygame.font.SysFont("Times New Roman",30)
+text=font.render("Ludo",True,"black")
+screen.blit(text,(350,200))
+screen.blit(templerun,(150,400))
+font=pygame.font.SysFont("Times New Roman",30)
+text=font.render("Templerun",True,"black")
+screen.blit(text,(350,300))
+pygame.display.update()
+
+running=True
+
+
+
+while running:
+    
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running=False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            pygame.draw.circle(screen,(225,0,0),(pos), 20,0)
+            #pygame.display.update()
+        elif event.type == pygame.MOUSEBUTTONUP:
+            pos2 = pygame.mouse.get_pos()
+            pygame.draw.line(screen,(125,0,125),(pos), (pos2),5)
+            pygame.draw.circle(screen,(0,0,0), (pos2), 20 , 0)
+    pygame.display.update()
