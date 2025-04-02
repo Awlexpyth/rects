@@ -1,0 +1,61 @@
+import pygame 
+from pygame.locals import*
+import random
+
+pygame.init()
+
+screen_width = 1150
+screen_height = 750
+
+screen = pygame.display.set_mode((screen_width , screen_height))
+pygame.display.set_caption("Flappy Bird")
+
+
+
+bg=pygame.image.load("bg.png")
+sbg=pygame.transform.scale(bg,(1150,750))
+
+fl=pygame.image.load("floor.png")
+sfl=pygame.transform.scale(fl,(1150,325))
+
+class Bird(pygame.sprite.Sprite):
+    def __init__(self, x , y):
+        pygame.sprite.Sprite.__init__(self)
+        self.images=[]
+        self.index = 0
+        self.counter = 1
+        for dra in range(1,4):
+            img=pygame.image.load(f"bird{dra}.png")
+            self.images.append(img)
+        self.image = self.images[self.index]
+        self.rect = self.image.get_rect()
+        self.rect.center = [x,y]
+    def update(self):
+        self.counter += 1
+        recovery = 20
+        if self.counter > recovery:
+            self.index += 1
+            self.counter = 0 
+            if self.index >= len(self.images):
+                self.index = 0 
+        self.image = self.images[self.index]
+birdgroup = pygame.sprite.Group()
+flappy = Bird(250, screen_height//2) 
+birdgroup.add(flappy)
+
+
+
+
+running= True
+
+
+while running:
+
+    screen.blit(sbg,(0,0))
+    screen.blit(sfl,(0,600))
+    birdgroup.draw(screen)
+    birdgroup.update()
+    pygame.display.update()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running=False   
