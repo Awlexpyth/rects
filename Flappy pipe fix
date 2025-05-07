@@ -1,0 +1,104 @@
+import pygame 
+from pygame.locals import*
+import random
+
+pygame.init()
+
+pipe_gap = 200
+flying= False
+gameover= False
+
+screen_width = 1150
+screen_height = 750
+
+screen = pygame.display.set_mode((screen_width , screen_height))
+pygame.display.set_caption("Flappy Bird")
+
+scrollspeed = 4.5
+
+bg=pygame.image.load("bg.png")
+sbg=pygame.transform.scale(bg,(1150,750))
+
+fl=pygame.image.load("floor.png")
+sfl=pygame.transform.scale(fl,(1150,325))
+
+pipe_frequency = 1500
+
+last_pipe = pygame.time.get_ticks() - pipe_frequency
+
+
+class Bird(pygame.sprite.Sprite):
+    def __init__(self, x , y):
+        pygame.sprite.Sprite.__init__(self)
+        self.images=[]
+        self.index = 0
+        self.counter = 1
+        for dra in range(1,4):
+            img=pygame.image.load(f"bird{dra}.png")
+            self.images.append(img)
+        self.image = self.images[self.index]
+        self.rect = self.image.get_rect()
+        self.rect.center = [x,y]
+    def update(self):
+        self.counter += 1
+        recovery = 20
+        if self.counter > recovery:
+            self.index += 1
+            self.counter = 0 
+            if self.index >= len(self.images):
+                self.index = 0 
+        self.image = self.images[self.index]
+birdgroup = pygame.sprite.Group()
+pipegroup = pygame.sprite.Group()
+flappy = Bird(250, screen_height//2) 
+birdgroup.add(flappy) 
+
+
+class pipe(pygame.sprite.Sprite):
+    def __init__(self, x , y , pos):
+       pygame.sprite.Sprite.__init__(self)
+       self.image = pygame.image.load("mariopipe.png") 
+       self.rect = self.image.get_rect()
+       #pos variable determines if the pipe is coming from the bottom or top
+       # pos 1 is from the top, -1 is from the bottom
+       if pos == 1: 
+            self.image=pygame.transform.flip(self.image,False,True)
+            self.rect.bottomleft=[x,y-(pipe_gap//2)]
+       elif pos == -1:
+           self.rect.topleft=[x,y+(pipe_gap//2)]
+    def update(self ):
+        self.rect.x -= scrollspeed
+        
+    
+
+        
+
+
+running= True
+
+
+while running:
+
+    screen.blit(sbg,(0,0))
+    screen.blit(sfl,(0,600))
+    birdgroup.draw(screen)
+    pipegroup.draw(screen)
+    birdgroup.update()
+    flying = True
+    if flying == True and gameover == False:
+        time_now = pygame.time.get_ticks()
+        if time_now - last_pipe > pipe_frequency:
+            pipe_height = random.randint(-100,100)
+            print("draw pipe pleease")
+            bottompipe = pipe(screen_width,+pipe_height+screen_height//2,-1 )
+            toppipe = pipe(screen_width,pipe_height+screen_height//2,1)
+            pipegroup.add(bottompipe)
+            pipegroup.add(toppipe) 
+            last_pipe = time_now 
+    pipegroup.update()
+
+    pygame.display.update()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running=False   
