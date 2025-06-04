@@ -1,0 +1,29 @@
+import pygame,time  
+import random 
+from pygame.locals import *
+
+
+
+screen_width = 900
+screen_height = 700
+pygame.init()
+screen = pygame.display.set_mode((screen_width,screen_height))
+pygame.display.set_caption("Binland")
+
+def load_image(path,size):
+   return pygame.transform.scale(pygame.image.load(path).convert_alpha(),size)
+
+
+
+
+
+
+
+
+running = True
+while(running):
+   for event in pygame.event.get():
+    if event.type == pygame.QUIT: 
+        running = False
+        pygame.display.update()
+        pygame.quit()
