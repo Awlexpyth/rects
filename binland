@@ -1,0 +1,44 @@
+import pygame,time  
+import random 
+from pygame.locals import *
+
+
+
+screen_width = 900
+screen_height = 700
+pygame.init()
+screen = pygame.display.set_mode((screen_width,screen_height))
+pygame.display.set_caption("Binland")
+
+def load_image(path,size):
+   return pygame.transform.scale(pygame.image.load(path).convert_alpha(),size)
+
+def change_background(img):
+   bg = load_image(img,(900,700))
+   screen.blit(bg,(0,0))
+
+class GameSprite(pygame.sprite.Sprite):
+   def __init__(self, size,img):
+      super().__init__()
+      self.image = load_image(img,size)
+      self.rect = self.image.get_rect()
+
+class Bin(GameSprite):
+   def _init_(self):
+      super()._init_((70,50),"bin.png")
+
+
+
+
+
+
+running = True
+while(running):
+   screenimage = "erth.png"
+   change_background(screenimage)
+   pygame.display.update()
+   for event in pygame.event.get():
+    if event.type == pygame.QUIT: 
+        running = False
+        pygame.display.update()
+        pygame.quit()
