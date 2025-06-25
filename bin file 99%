@@ -1,0 +1,76 @@
+import pygame 
+import random 
+from pygame.locals import *
+
+
+
+screen_width = 900
+screen_height = 700
+pygame.init()
+screen = pygame.display.set_mode((screen_width,screen_height))
+pygame.display.set_caption("Binland")
+score = 0
+def load_image(size,path):
+   return pygame.transform.scale(pygame.image.load(path).convert_alpha(),size)
+
+def change_background(img):
+   bg = load_image((900,700), img) 
+   screen.blit(bg,(0,0))
+
+class GameSprite(pygame.sprite.Sprite):
+   def __init__(self,size,image):
+      super().__init__()
+      self.image = load_image(size,image)
+      self.rect = self.image.get_rect()
+
+class Bin(GameSprite):
+   def __init__(self):
+      super().__init__((60,80),"bin.png")
+
+class recyclable(GameSprite):
+   def __init__(self):
+      super().__init__((50,50),random.choice(["box.png","pencil.png","item1.png"]) )
+
+class nonrecyclable(GameSprite):
+   def __init__(self):
+      super().__init__((50,50), "bag.png")
+                       
+bin = Bin()
+sprites = pygame.sprite.Group(bin)
+recyclables = pygame.sprite.Group()
+nonrecyclables = pygame.sprite.Group()
+for i in range(50):
+   item = recyclable()
+   item.rect.topleft=(random.randint(0,screen_width),random.randint(0,screen_height))
+   recyclables.add(item)
+   sprites.add(item)
+for i in range(25):
+   iteem = nonrecyclable()
+   iteem.rect.topleft=(random.randint(0,screen_width),random.randint(0,screen_height))
+   nonrecyclables.add(iteem)
+   sprites.add(iteem) 
+running = True
+while(running):
+   screenimage = "erth.png"
+   change_background(screenimage)
+   sprites.draw(screen)
+   pygame.display.update()
+   keys = pygame.key.get_pressed()
+   if keys[pygame.K_UP]:
+     bin.rect.y -= 10
+   if keys[pygame.K_DOWN]:
+      bin.rect.y += 10
+   if keys[pygame.K_LEFT]:
+      bin.rect.x -= 10
+   if keys[pygame.K_RIGHT]:
+      bin.rect.x += 10
+   pygame.display.update()
+   for item in pygame.sprite.spritecollide(bin,recyclables,True):
+      score += 1 
+   for item in pygame.sprite.spritecollide(bin,nonrecyclables,True):
+      score -= 1 
+   for event in pygame.event.get():
+      if event.type == pygame.QUIT: 
+        running = False
+        pygame.display.update()
+        pygame.quit()
